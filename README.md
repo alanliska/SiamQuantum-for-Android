@@ -4,45 +4,7 @@
 
 * added the stamp defining the release (sq.c)
 * option.c: added the include file <xc_funcs.h> from LIBXC
-
-#ifdef LIBXC
-#include <xc.h>
-#include <xc_funcs.h>
-#endif
-
-* dft.c: moved the block
-
-double g(double Ai,double xi,double bi,double ci,double rs){
-		double x = sqrt(rs);
-		double Qi = sqrt(4.*ci-bi*bi);
-		double Xix  = x * x +  bi*x  + ci;
-		double Xixi = xi* xi + bi*xi + ci;
-		double atanQ = atan(Qi/(x+x+bi));
-		return Ai*( log(x*x/Xix) + 2.*bi/Qi*atanQ
-		            -bi*xi/Xixi*( log((x-xi)*(x-xi)/Xix)
-		                        + 2.*(xi+xi+bi)/Qi*atanQ
-		                      )
-		          );
-	}
-
-double dgdrs(double Ai,double xi,double bi,double ci,double rs){
-		double x = sqrt(rs);
-		double Qi = sqrt(4.*ci-bi*bi);
-		double Xix  = x * x +  bi*x  + ci;
-		double Xixi = xi* xi + bi*xi + ci;
-		double b2Q2x = bi*bi+Qi*Qi+4.*x*(bi+x);
-		double dgdx = 2.*Ai/x 
-		              - 4.*Ai*bi/b2Q2x
-		              - Ai*bi*xi/Xixi*( 2./(x-xi) 
-		                                - 4.*(xi+xi+bi)/b2Q2x
-		                              );
-		double dgdX = Ai/Xix*(bi*xi/Xixi-1.);
-		double dXdx = bi+2*x;
-		double dxdrs = 1./2/x;
-
-		return dgdx*dxdrs + dgdX*dXdx*dxdrs;
-	}
-
+* dft.c: moved the block double g and double dgdrs
 * Siam Quantum binaries are newly linked with libopenblas.a (without Fortran), therefore it is possible to use the official Android NDK´s clang as well as the GNU GCC based Android toolchains
 
 ## Compilation
